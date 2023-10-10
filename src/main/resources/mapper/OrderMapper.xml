@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.OrderMapper">
+
+    <resultMap id="BaseResultMap" type="org.example.pojo.bean.Order">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="member_id" property="memberId" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="tenant_id" property="tenantId" jdbcType="BIGINT"/>
+    </resultMap>
+    <select id="getOrderList" resultType="org.example.pojo.vo.OrderVo">
+      SELECT id , order_no , member_id ,amount , tenant_id from t_order
+        <where>
+            tenant_id = #{tenantId}
+            <if test="null != orderNo and orderNo != ''">
+                AND order_no like concat('%',#{orderNo},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getOrderAmount" resultType="org.example.pojo.vo.OrderDetailVo">
+        SELECT o.order_no, SUM(i.price * i.count) AS amount
+        FROM t_order o JOIN t_order_item i ON o.order_no = i.order_no
+        where o.tenant_id = #{tenantId} and i.tenant_id = #{tenantId}
+        GROUP BY o.order_no
+    </select>
+</mapper>
