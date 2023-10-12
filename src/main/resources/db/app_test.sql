@@ -1,16 +1,8 @@
-/*
- Navicat Premium Data Transfer
-
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ----------------------------
--- Table structure for t_order
--- ----------------------------
-DROP TABLE IF EXISTS `t_order`;
-CREATE TABLE `t_order`  (
+DROP TABLE IF EXISTS `t_order_1`;
+CREATE TABLE `t_order_1`  (
   `id` bigint(20) NOT NULL,
   `order_no` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `member_id` bigint(20) NULL DEFAULT NULL,
@@ -19,15 +11,9 @@ CREATE TABLE `t_order`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of t_order
--- ----------------------------
 
--- ----------------------------
--- Table structure for t_order_item
--- ----------------------------
-DROP TABLE IF EXISTS `t_order_item`;
-CREATE TABLE `t_order_item`  (
+DROP TABLE IF EXISTS `t_order_item_1`;
+CREATE TABLE `t_order_item_1`  (
   `id` bigint(20) NOT NULL,
   `order_no` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `member_id` bigint(20) NULL DEFAULT NULL,
@@ -37,8 +23,5 @@ CREATE TABLE `t_order_item`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of t_order_item
--- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

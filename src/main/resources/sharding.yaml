@@ -1,41 +1,32 @@
 dataSources:
   testApp:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    driverClassName: com.mysql.jdbc.Driver
-    jdbcUrl: jdbc:mysql://127.0.0.1:3306/app_test
+    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    jdbcUrl: jdbc:tc:mysql:5.7.34:///app_test?TC_INITSCRIPT=db/app_test.sql&TC_DAEMON=true
     username: root
     password: 123456
 rules:
-  - !TRANSACTION
-    defaultType: XA
-    providerType: Atomikos
   - !SHARDING
     tables:
-      t_order: # 分表，逻辑表名
-        # 节点表添加下初始的表,后续会在新增租户的时候新增表且刷新节点
+      t_order:
         actualDataNodes: testApp.t_order
-        tableStrategy: # 配置分表策略
-          standard: # 用于单分片键的标准分片场景
+        tableStrategy:
+          standard:
             shardingColumn: tenant_id
             shardingAlgorithmName: real-data-inline
-      t_order_item: # 分表，逻辑表名
-        # 节点表添加下初始的表,后续会在新增租户的时候新增表且刷新节点
+      t_order_item:
         actualDataNodes: testApp.t_order_item
-        tableStrategy: # 配置分表策略
-          standard: # 用于单分片键的标准分片场景
+        tableStrategy:
+          standard:
             shardingColumn: tenant_id
             shardingAlgorithmName: real-data-inline
-    # 分片算法配置
     shardingAlgorithms:
-      real-data-inline: # 分片算法名称
-        type: CLASS_BASED #自定义策略
+      real-data-inline:
+        type: CLASS_BASED
         props:
           strategy: standard
-          # 包名+类名
           algorithmClassName: org.example.utils.DataShardingAlgorithm
-    bindingTables:
-      - t_order,t_order_item
+#    bindingTables:
+#      - t_order,t_order_item
 props:
   sql-show: true
-mode:
-  type: Standalone
